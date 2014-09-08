@@ -12,6 +12,7 @@
 #pragma once
 #endif
 
+#include "camera_manager.h"
 #include "iinput.h"
 #include "mathlib/vector.h"
 #include "kbutton.h"
@@ -84,6 +85,7 @@ public:
 	virtual		float		Joystick_GetYaw( void );
 	virtual		void		ClearInputButton( int bits );
 
+	virtual		void		CalculateCameraView( Vector& position, QAngle &angles );
 	virtual		void		CAM_Think( void );
 	virtual		int			CAM_IsThirdPerson( void );
 	virtual		void		CAM_ToThirdPerson(void);
@@ -154,6 +156,10 @@ private:
 
 // Private Data
 private:
+
+	// Camera managing class.
+	CCameraManager m_cameraManager;
+
 	typedef struct
 	{
 		unsigned int AxisFlags;

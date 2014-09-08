@@ -24,7 +24,6 @@
 #endif
 #include <ctype.h> // isalnum()
 #include <voice_status.h>
-#include "cam_thirdperson.h"
 
 #ifdef SIXENSE
 #include "sixense/in_sixense.h"
@@ -670,28 +669,6 @@ AdjustYaw
 */
 void CInput::AdjustYaw( float speed, QAngle& viewangles )
 {
-	if ( !(in_strafe.state & 1) )
-	{
-		viewangles[YAW] -= speed*cl_yawspeed.GetFloat() * KeyState (&in_right);
-		viewangles[YAW] += speed*cl_yawspeed.GetFloat() * KeyState (&in_left);
-	}
-
-	// thirdperson platformer mode
-	// use movement keys to aim the player relative to the thirdperson camera
-	if ( CAM_IsThirdPerson() && thirdperson_platformer.GetInt() )
-	{
-		float side = KeyState(&in_moveleft) - KeyState(&in_moveright);
-		float forward = KeyState(&in_forward) - KeyState(&in_back);
-
-		if ( side || forward )
-		{
-			viewangles[YAW] = RAD2DEG(atan2(side, forward)) + g_ThirdPersonManager.GetCameraOffsetAngles()[ YAW ];
-		}
-		if ( side || forward || KeyState (&in_right) || KeyState (&in_left) )
-		{
-			cam_idealyaw.SetValue( g_ThirdPersonManager.GetCameraOffsetAngles()[ YAW ] - viewangles[ YAW ] );
-		}
-	}
 }
 
 /*

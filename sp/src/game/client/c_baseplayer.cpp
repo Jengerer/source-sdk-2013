@@ -40,7 +40,6 @@
 #include "voice_status.h"
 #include "fx.h"
 #include "dt_utlvector_recv.h"
-#include "cam_thirdperson.h"
 #if defined( REPLAY_ENABLED )
 #include "replay/replaycamera.h"
 #include "replay/ireplaysystem.h"
@@ -2072,27 +2071,6 @@ void C_BasePlayer::GetToolRecordingState( KeyValues *msg )
 	float flZFar = view->GetZFar();
 	CalcView( state.m_vecEyePosition, state.m_vecEyeAngles, flZNear, flZFar, state.m_flFOV );
 	state.m_bThirdPerson = !engine->IsPaused() && ::input->CAM_IsThirdPerson();
-
-	// this is a straight copy from ClientModeShared::OverrideView,
-	// When that method is removed in favor of rolling it into CalcView,
-	// then this code can (should!) be removed
-	if ( state.m_bThirdPerson )
-	{
-		Vector cam_ofs = g_ThirdPersonManager.GetCameraOffsetAngles();
-		
-		QAngle camAngles;
-		camAngles[ PITCH ] = cam_ofs[ PITCH ];
-		camAngles[ YAW ] = cam_ofs[ YAW ];
-		camAngles[ ROLL ] = 0;
-
-		Vector camForward, camRight, camUp;
-		AngleVectors( camAngles, &camForward, &camRight, &camUp );
-
-		VectorMA( state.m_vecEyePosition, -cam_ofs[ ROLL ], camForward, state.m_vecEyePosition );
-
-		// Override angles from third person camera
-		VectorCopy( camAngles, state.m_vecEyeAngles );
-	}
 
 	msg->SetPtr( "camera", &state );
 }

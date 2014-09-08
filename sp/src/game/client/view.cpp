@@ -683,12 +683,12 @@ void CViewRender::SetUpViews()
 		// FIXME: What happens when there's no player?
 		if (pPlayer)
 		{
-			pPlayer->CalcView( view.origin, view.angles, view.zNear, view.zFar, view.fov );
-
+			input->CalculateCameraView( view.origin, view.angles );
+			
 			// If we are looking through another entities eyes, then override the angles/origin for view
 			int viewentity = render->GetViewEntity();
 
-			if ( !g_nKillCamMode && (pPlayer->entindex() != viewentity) )
+			if (pPlayer->entindex() != viewentity)
 			{
 				C_BaseEntity *ve = cl_entitylist->GetEnt( viewentity );
 				if ( ve )

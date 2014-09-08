@@ -26,7 +26,6 @@
 #include "cdll_client_int.h"
 #include "cdll_util.h"
 #include "tier1/convar_serverbounded.h"
-#include "cam_thirdperson.h"
 #include "inputsystem/iinputsystem.h"
 
 #if defined( _X360 )
@@ -452,106 +451,12 @@ void CInput::ScaleMouse( float *x, float *y )
 //-----------------------------------------------------------------------------
 void CInput::ApplyMouse( QAngle& viewangles, CUserCmd *cmd, float mouse_x, float mouse_y )
 {
-	if ( !((in_strafe.state & 1) || lookstrafe.GetInt()) )
-	{
-#ifdef PORTAL
-		if ( g_bUpsideDown )
-		{
-			viewangles[ YAW ] += m_yaw.GetFloat() * mouse_x;
-		}
-		else
-#endif //#ifdef PORTAL
-		{
-			if ( CAM_IsThirdPerson() && thirdperson_platformer.GetInt() )
-			{
-				if ( mouse_x )
-				{
-					Vector vTempOffset = g_ThirdPersonManager.GetCameraOffsetAngles();
-
-					// use the mouse to orbit the camera around the player, and update the idealAngle
-					vTempOffset[ YAW ] -= m_yaw.GetFloat() * mouse_x;
-					cam_idealyaw.SetValue( vTempOffset[ YAW ] - viewangles[ YAW ] );
-
-					g_ThirdPersonManager.SetCameraOffsetAngles( vTempOffset );
-
-					// why doesn't this work??? CInput::AdjustYaw is why
-					//cam_idealyaw.SetValue( cam_idealyaw.GetFloat() - m_yaw.GetFloat() * mouse_x );
-				}
-			}
-			else
-			{
-				// Otherwize, use mouse to spin around vertical axis
-				viewangles[YAW] -= CAM_CapYaw( m_yaw.GetFloat() * mouse_x );
-			}
-		}
-	}
-	else
-	{
-		// If holding strafe key or mlooking and have lookstrafe set to true, then apply
-		//  horizontal mouse movement to sidemove.
-		cmd->sidemove += m_side.GetFloat() * mouse_x;
-	}
-
-	// If mouselooking and not holding strafe key, then use vertical mouse
-	//  to adjust view pitch.
-	if (!(in_strafe.state & 1))
-	{
-#ifdef PORTAL
-		if ( g_bUpsideDown )
-		{
-			viewangles[PITCH] -= m_pitch->GetFloat() * mouse_y;
-		}
-		else
-#endif //#ifdef PORTAL
-		{
-			if ( CAM_IsThirdPerson() && thirdperson_platformer.GetInt() )
-			{
-				if ( mouse_y )
-				{
-					Vector vTempOffset = g_ThirdPersonManager.GetCameraOffsetAngles();
-
-					// use the mouse to orbit the camera around the player, and update the idealAngle
-					vTempOffset[ PITCH ] += m_pitch->GetFloat() * mouse_y;
-					cam_idealpitch.SetValue( vTempOffset[ PITCH ] - viewangles[ PITCH ] );
-
-					g_ThirdPersonManager.SetCameraOffsetAngles( vTempOffset );
-
-					// why doesn't this work??? CInput::AdjustYaw is why
-					//cam_idealpitch.SetValue( cam_idealpitch.GetFloat() + m_pitch->GetFloat() * mouse_y );
-				}
-			}
-			else
-			{
-				viewangles[PITCH] += m_pitch->GetFloat() * mouse_y;
-			}
-
-			// Check pitch bounds
-			if (viewangles[PITCH] > cl_pitchdown.GetFloat())
-			{
-				viewangles[PITCH] = cl_pitchdown.GetFloat();
-			}
-			if (viewangles[PITCH] < -cl_pitchup.GetFloat())
-			{
-				viewangles[PITCH] = -cl_pitchup.GetFloat();
-			}
-		}
-	}
-	else
-	{
-		// Otherwise if holding strafe key and noclipping, then move upward
-/*		if ((in_strafe.state & 1) && IsNoClipping() )
-		{
-			cmd->upmove -= m_forward.GetFloat() * mouse_y;
-		} 
-		else */
-		{
-			// Default is to apply vertical mouse movement as a forward key press.
-			cmd->forwardmove -= m_forward.GetFloat() * mouse_y;
-		}
-	}
+	// Pass mouse event to camera manager.
+	float yawDelta = -mouse_x * m_yaw.GetFloat();
+	float pitchDelta = mouse_y * m_pitch->GetFloat();
+	m_cameraManager.HandleMouse( yawDelta, pitchDelta );
 
 	// Finally, add mouse state to usercmd.
-	// NOTE:  Does rounding to int cause any issues?  ywb 1/17/04
 	cmd->mousedx = (int)mouse_x;
 	cmd->mousedy = (int)mouse_y;
 }
