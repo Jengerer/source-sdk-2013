@@ -37,35 +37,45 @@ public:
 
 class ConVar;
 
+/* Base input manager class. */
 class CInputManager : public IInput
 {
-// Interface
-public:
-							CInputManager( void );
-							~CInputManager( void );
 
-	virtual		void		Init_All( void );
-	virtual		void		Shutdown_All( void );
-	virtual		int			GetButtonBits( int );
-	virtual		void		CreateMove ( int sequence_number, float input_sample_frametime, bool active );
+public:
+
+	CInputManager( void );
+	~CInputManager( void );
+
+	// Initialize and clean up.
+	virtual		void		Initialize( void );
+	virtual		void		Shutdown( void );
+
+	// PLayer movement and command handling.
+	virtual		int		GetButtonBits( int );
+	virtual		void		CreateMove( int sequence_number, float input_sample_frametime, bool active );
 	virtual		void		ExtraMouseSample( float frametime, bool active );
 	virtual		bool		WriteUsercmdDeltaToBuffer( bf_write *buf, int from, int to, bool isnewcommand );
 	virtual		void		EncodeUserCmdToBuffer( bf_write& buf, int slot );
 	virtual		void		DecodeUserCmdFromBuffer( bf_read& buf, int slot );
-
 	virtual		CUserCmd	*GetUserCmd( int sequence_number );
-
 	virtual		void		MakeWeaponSelection( C_BaseCombatWeapon *weapon );
 
+	// Keyboard key handling.
 	virtual		float		KeyState( kbutton_t *key );
 	virtual		int			KeyEvent( int down, ButtonCode_t keynum, const char *pszCurrentBinding );
 	virtual		kbutton_t	*FindKey( const char *name );
 
+	// Controller and joystick handling.
 	virtual		void		ControllerCommands( void );
 	virtual		void		Joystick_Advanced( void );
 	virtual		void		Joystick_SetSampleTime(float frametime);
 	virtual		void		IN_SetSampleTime( float frametime );
+	virtual		float		Joystick_GetForward( void );
+	virtual		float		Joystick_GetSide( void );
+	virtual		float		Joystick_GetPitch( void );
+	virtual		float		Joystick_GetYaw( void );
 
+	// Mouse handling.
 	virtual		void		AccumulateMouse( void );
 	virtual		void		ActivateMouse( void );
 	virtual		void		DeactivateMouse( void );
@@ -79,45 +89,19 @@ public:
 
 //	virtual		bool		IsNoClipping( void );
 	virtual		float		GetLastForwardMove( void );
-	virtual		float		Joystick_GetForward( void );
-	virtual		float		Joystick_GetSide( void );
-	virtual		float		Joystick_GetPitch( void );
-	virtual		float		Joystick_GetYaw( void );
 	virtual		void		ClearInputButton( int bits );
 
-	virtual		void		CalculateCameraView( Vector& position, QAngle &angles );
-	virtual		void		CAM_Think( void );
-	virtual		int			CAM_IsThirdPerson( void );
-	virtual		void		CAM_ToThirdPerson(void);
-	virtual		void		CAM_ToFirstPerson(void);
-	virtual		void		CAM_StartMouseMove(void);
-	virtual		void		CAM_EndMouseMove(void);
-	virtual		void		CAM_StartDistance(void);
-	virtual		void		CAM_EndDistance(void);
-	virtual		int			CAM_InterceptingMouse( void );
-
-	// orthographic camera info
-	virtual		void		CAM_ToOrthographic();
-	virtual		bool		CAM_IsOrthographic() const;
-	virtual		void		CAM_OrthographicSize( float& w, float& h ) const;
-
-	virtual		float		CAM_CapYaw( float fVal ) { return fVal; }
-	
 #if defined( HL2_CLIENT_DLL )
 	// IK back channel info
 	virtual		void		AddIKGroundContactInfo( int entindex, float minheight, float maxheight );
 #endif
 	virtual		void		LevelInit( void );
 
-	virtual		void		CAM_SetCameraThirdData( CameraThirdData_t *pCameraData, const QAngle &vecCameraOffset );
-	virtual		void		CAM_CameraThirdThink( void );	
-
 	virtual	bool		EnableJoystickMode();
 
 // Private Implementation
 private:
 	// Implementation specific initialization
-	void		Init_Camera( void );
 	void		Init_Keyboard( void );
 	void		Init_Mouse( void );
 	void		Shutdown_Keyboard( void );
@@ -157,7 +141,7 @@ private:
 // Private Data
 private:
 
-	// Camera managing class.
+	// Camera managing class to pass mouse events to.
 	ICamera *m_pCamera;
 
 	typedef struct
