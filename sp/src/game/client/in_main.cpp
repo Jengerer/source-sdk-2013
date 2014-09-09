@@ -7,7 +7,6 @@
 // $NoKeywords: $
 //=============================================================================//
 
-
 #include "cbase.h"
 #include "kbutton.h"
 #include "usercmd.h"

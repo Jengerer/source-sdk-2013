@@ -81,23 +81,6 @@ public:
 	virtual	float		Joystick_GetPitch( void ) = 0;
 	virtual	float		Joystick_GetYaw( void ) = 0;
 
-	// Third Person camera ( TODO/FIXME:  Move this to a separate interface? )
-	virtual	void		CalculateCameraView( Vector& position, QAngle &angles ) = 0;
-	virtual void		CAM_Think( void ) = 0;
-	virtual int			CAM_IsThirdPerson( void ) = 0;
-	virtual void		CAM_ToThirdPerson(void) = 0;
-	virtual void		CAM_ToFirstPerson(void) = 0;
-	virtual void		CAM_StartMouseMove(void) = 0;
-	virtual void		CAM_EndMouseMove(void) = 0;
-	virtual void		CAM_StartDistance(void) = 0;
-	virtual void		CAM_EndDistance(void) = 0;
-	virtual int			CAM_InterceptingMouse( void ) = 0;
-
-	// orthographic camera info	( TODO/FIXME:  Move this to a separate interface? )
-	virtual void		CAM_ToOrthographic() = 0;
-	virtual	bool		CAM_IsOrthographic() const = 0;
-	virtual	void		CAM_OrthographicSize( float& w, float& h ) const = 0;
-
 #if defined( HL2_CLIENT_DLL )
 	// IK back channel info
 	virtual void		AddIKGroundContactInfo( int entindex, float minheight, float maxheight ) = 0;
@@ -113,7 +96,5 @@ public:
 
 	virtual	bool		EnableJoystickMode() = 0;
 };
-
-extern ::IInput *input;
 
 #endif // IINPUT_H

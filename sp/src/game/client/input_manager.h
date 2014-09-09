@@ -6,13 +6,13 @@
 //
 //===========================================================================//
 
-#if !defined( INPUT_H )
-#define INPUT_H
+#if !defined( INPUT_MANAGER_H )
+#define INPUT_MANAGER_H
 #ifdef _WIN32
 #pragma once
 #endif
 
-#include "camera_manager.h"
+#include "icamera.h"
 #include "iinput.h"
 #include "mathlib/vector.h"
 #include "kbutton.h"
@@ -37,12 +37,12 @@ public:
 
 class ConVar;
 
-class CInput : public IInput
+class CInputManager : public IInput
 {
 // Interface
 public:
-							CInput( void );
-							~CInput( void );
+							CInputManager( void );
+							~CInputManager( void );
 
 	virtual		void		Init_All( void );
 	virtual		void		Shutdown_All( void );
@@ -158,7 +158,7 @@ private:
 private:
 
 	// Camera managing class.
-	CCameraManager m_cameraManager;
+	ICamera *m_pCamera;
 
 	typedef struct
 	{
@@ -292,5 +292,5 @@ extern void KeyDown( kbutton_t *b, const char *c );
 extern void KeyUp( kbutton_t *b, const char *c );
 
 
-#endif // INPUT_H
+#endif // INPUT_MANAGER_H
 	

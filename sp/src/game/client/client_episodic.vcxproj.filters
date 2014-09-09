@@ -851,9 +851,6 @@
     <ClInclude Include="initializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="interpolatedvar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1781,9 +1778,6 @@
     <ClInclude Include="..\..\game\client\c_vote_controller.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="camera_manager.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="cdll_bounded_cvars.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -1891,6 +1885,21 @@
     </ClInclude>
     <ClInclude Include="toolframework_client.h">
       <Filter>Tool Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="icamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="client_game_interfaces.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="boko_game_interfaces.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="boko_camera_manager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="input_manager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2210,9 +2219,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="c_world.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="camera_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="camomaterialproxy.cpp">
@@ -3142,9 +3148,6 @@
     <ClCompile Include="..\..\game\shared\hl2\hl_gamemovement.cpp">
       <Filter>Source Files\HL2 DLL</Filter>
     </ClCompile>
-    <ClCompile Include="hl2\hl_in_main.cpp">
-      <Filter>Source Files\HL2 DLL</Filter>
-    </ClCompile>
     <ClCompile Include="hl2\hl_prediction.cpp">
       <Filter>Source Files\HL2 DLL</Filter>
     </ClCompile>
@@ -3417,6 +3420,15 @@
     </ClCompile>
     <ClCompile Include="toolframework_client.cpp">
       <Filter>Tool Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="client_game_interfaces.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hl2\boko_input_manager.cpp">
+      <Filter>Source Files\HL2 DLL</Filter>
+    </ClCompile>
+    <ClCompile Include="boko_camera_manager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
