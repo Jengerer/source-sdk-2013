@@ -14,7 +14,7 @@ $Configuration
 {
 	$Compiler
 	{
-		$AdditionalIncludeDirectories	".\hl2;.\hl2\elements;$SRCDIR\game\shared\hl2;$SRCDIR\game\shared\episodic;..\..\public;$BASE"
+		$AdditionalIncludeDirectories	".\boko;.\hl2;.\hl2\elements;$SRCDIR\game\shared\hl2;$SRCDIR\game\shared\episodic;..\..\public;$BASE"
 		$PreprocessorDefinitions		"$BASE;HL2_CLIENT_DLL;HL2_EPISODIC"
 	}
 }
@@ -26,6 +26,14 @@ $Project "Client (Episodic)"
 		$File	"hud_chat.cpp"
 		$File	"c_team_objectiveresource.cpp"
 		$File	"c_team_objectiveresource.h"
+
+		$Folder	"Boko"
+		{
+			$File	"boko\boko_camera_manager.h"
+			$File	"boko\boko_camera_manager.cpp"
+			$File	"boko\boko_game_interfaces.h"
+			$File	"boko\boko_game_interfaces.cpp"
+		}
 
 		$Folder	"HL2 DLL"
 		{
@@ -102,7 +110,6 @@ $Project "Client (Episodic)"
 			$File	"$SRCDIR\game\shared\hl2\hl2_usermessages.cpp"
 			$File	"$SRCDIR\game\shared\hl2\hl_gamemovement.cpp"
 			$File	"$SRCDIR\game\shared\hl2\hl_gamemovement.h"
-			$File	"hl2\hl_in_main.cpp"
 			$File	"hl2\hl_prediction.cpp"
 			$File	"hl2\hud_ammo.cpp"
 			$File	"hl2\hud_battery.cpp"
