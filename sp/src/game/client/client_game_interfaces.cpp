@@ -16,3 +16,4 @@ void CClientGameInterfaces::SetInput( IInput *pInput )
 {
 	m_pInput = pInput;
 }
+

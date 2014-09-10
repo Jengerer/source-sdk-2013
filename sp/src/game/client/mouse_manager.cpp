@@ -7,10 +7,10 @@
 #include "cbase.h"
 #include "mouse_manager.h"
 #include "cdll_client_int.h"
-#include "vgui/isurface.h"
-#include "vgui/iinput.h"
-#include "vgui/cursor.h"
-#include "vgui_controls/controls.h"
+#include "vgui/ISurface.h"
+#include "vgui/IInput.h"
+#include "vgui/Cursor.h"
+#include "vgui_controls/Controls.h"
 #include "inputsystem/iinputsystem.h"
 #include "tier0/icommandline.h"
 
@@ -182,7 +182,7 @@ void CMouseManager::AccumulateMovement( void )
 		GetWindowCenter( &centerX, &centerY );
 		m_iAccumulatedX += (currentX - centerX);
 		m_iAccumulatedY += (currentY - centerY);
-#elif
+#elif defined( USE_SDL )
 		// Get from engine.
 		int deltaX, deltaY;
 		engine->GetMouseDelta( deltaX, deltaY );

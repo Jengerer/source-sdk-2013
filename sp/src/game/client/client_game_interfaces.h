@@ -11,8 +11,8 @@ class CClientGameInterfaces
 public:
 
 	// Get the provider for the providers.
-	static inline ICamera *GetCamera( void ) { return m_pCamera; }
-	static IInput *GetInput( void ) { return m_pInput; }
+	inline static ICamera *GetCamera( void );
+	inline static IInput *GetInput( void );
 
 	// Update the providers.
 	static void SetCamera( ICamera *pCamera );
@@ -24,5 +24,17 @@ private:
 	static IInput *m_pInput;
 
 };
+
+// Get the camera interface.
+inline ICamera *CClientGameInterfaces::GetCamera( void )
+{
+	return m_pCamera;
+}
+
+// Get the input interface.
+inline IInput *CClientGameInterfaces::GetInput( void )
+{
+	return m_pInput;
+}
 
 #endif // CLIENT_GAME_INTERFACES_H

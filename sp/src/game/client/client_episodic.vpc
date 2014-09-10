@@ -32,6 +32,8 @@ $Project "Client (Episodic)"
 			$File	"boko\boko_camera_manager.h"
 			$File	"boko\boko_camera_manager.cpp"
 			$File	"boko\boko_game_interfaces.h"
+			$File	"boko\boko_game_interfaces.cpp"
+			$File	"boko\boko_input_manager.h"
 		}
 
 		$Folder	"HL2 DLL"
