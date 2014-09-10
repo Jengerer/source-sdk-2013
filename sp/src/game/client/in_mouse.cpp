@@ -16,7 +16,7 @@
 #include "kbutton.h"
 #include "basehandle.h"
 #include "usercmd.h"
-#include "input.h"
+#include "input_manager.h"
 #include "iviewrender.h"
 #include "iclientmode.h"
 #include "tier0/icommandline.h"

@@ -1,18 +1,18 @@
+#if defined( WIN32 ) && !defined( _X360 )
+#define _WIN32_WINNT 0x0502
+#include <windows.h>
+#endif
+
+
 #include "cbase.h"
-#include "cdll_client_int.h"
 #include "mouse_manager.h"
+#include "cdll_client_int.h"
 #include "vgui/isurface.h"
 #include "vgui/iinput.h"
 #include "vgui/cursor.h"
 #include "vgui_controls/controls.h"
 #include "inputsystem/iinputsystem.h"
 #include "tier0/icommandline.h"
-
-// Windows specific mouse header.
-#if defined( WIN32 ) && !defined( _X360 )
-#define _WIN32_WINNT 0x0502
-#include <Windows.h>
-#endif
 
 // Mouse enabled variable.
 ConVar cl_mouseenable( "cl_mouseenable", "1" );
@@ -65,7 +65,7 @@ void CMouseManager::Initialize( void )
 }
 
 // Activate the mouse.
-void CMouseManager::ActivateMouse( void )
+void CMouseManager::Activate( void )
 {
 	// Check if redundant.
 	if (m_bActive) {
@@ -84,7 +84,7 @@ void CMouseManager::ActivateMouse( void )
 }
 
 // Deactivate the mouse.
-void CMouseManager::DeactivateMouse( void )
+void CMouseManager::Deactivate( void )
 {
 	// Check that we're not already inactive.
 	if (!m_bActive) {
@@ -105,8 +105,14 @@ void CMouseManager::DeactivateMouse( void )
 	ResetAccumulatedMovement();
 }
 
+// Return whether the mouse is active.
+bool CMouseManager::IsActive( void ) const
+{
+	return m_bActive;
+}
+
 // Update the mouse and return scaled movement.
-void CMouseManager::UpdateMouse( float *deltaX, float *deltaY )
+void CMouseManager::GetMouseMovement( float *deltaX, float *deltaY )
 {
 	// Update mouse acceleration settings if they changed.
 	ApplyAccelerationSettings();

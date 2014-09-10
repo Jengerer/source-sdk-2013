@@ -11,7 +11,7 @@
 #include "weapon_selection.h"
 #include "history_resource.h"
 #include "iinput.h"
-#include "input.h"
+#include "input_manager.h"
 #include "view.h"
 #include "iviewrender.h"
 #include "iclientmode.h"
@@ -40,6 +40,7 @@
 #include "voice_status.h"
 #include "fx.h"
 #include "dt_utlvector_recv.h"
+#include "client_game_interfaces.h"
 #if defined( REPLAY_ENABLED )
 #include "replay/replaycamera.h"
 #include "replay/ireplaysystem.h"
@@ -940,6 +941,8 @@ void C_BasePlayer::OnRestore()
 
 	if ( IsLocalPlayer() )
 	{
+		IInput *input = CClientGameInterfaces::GetInput();
+
 		// debounce the attack key, for if it was used for restore
 		input->ClearInputButton( IN_ATTACK | IN_ATTACK2 );
 		// GetButtonBits() has to be called for the above to take effect
@@ -1146,7 +1149,7 @@ bool C_BasePlayer::CreateMove( float flInputSampleTime, CUserCmd *pCmd )
 		if ( joy_autosprint.GetBool() )
 #endif
 		{
-			if ( input->KeyState( &in_joyspeed ) != 0.0f )
+			if (CClientGameInterfaces::GetInput()->KeyState( &in_joyspeed ) != 0.0f )
 			{
 				pCmd->buttons |= IN_SPEED;
 			}
@@ -1871,7 +1874,7 @@ void C_BasePlayer::ThirdPersonSwitch( bool bThirdperson )
 	int ObserverMode = pLocalPlayer->GetObserverMode();
 	if ( ( ObserverMode == OBS_MODE_NONE ) || ( ObserverMode == OBS_MODE_IN_EYE ) )
 	{
-		return !input->CAM_IsThirdPerson() && ( !ToolsEnabled() || !ToolFramework_IsThirdPersonCamera() );
+		return !CClientGameInterfaces::GetCamera()->IsThirdPerson() && ( !ToolsEnabled() || !ToolFramework_IsThirdPersonCamera() );
 	}
 
 	// Not looking at the local player, e.g. in a replay in third person mode or freelook.
@@ -2070,7 +2073,7 @@ void C_BasePlayer::GetToolRecordingState( KeyValues *msg )
 	float flZNear = view->GetZNear();
 	float flZFar = view->GetZFar();
 	CalcView( state.m_vecEyePosition, state.m_vecEyeAngles, flZNear, flZFar, state.m_flFOV );
-	state.m_bThirdPerson = !engine->IsPaused() && ::input->CAM_IsThirdPerson();
+	state.m_bThirdPerson = !engine->IsPaused() && CClientGameInterfaces::GetCamera()->IsThirdPerson();
 
 	msg->SetPtr( "camera", &state );
 }

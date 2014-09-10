@@ -8,6 +8,7 @@
 //===========================================================================//
 
 #include "cbase.h"
+#include "input_manager.h"
 #include "basehandle.h"
 #include "utlvector.h"
 #include "cdll_client_int.h"
@@ -15,7 +16,7 @@
 #include "kbutton.h"
 #include "usercmd.h"
 #include "iclientvehicle.h"
-#include "input.h"
+#include "client_game_interfaces.h"
 #include "iviewrender.h"
 #include "convar.h"
 #include "hud.h"
@@ -123,10 +124,20 @@ extern ConVar cam_idealyaw;
 extern ConVar thirdperson_platformer;
 extern ConVar thirdperson_screenspace;
 
+enum
+{
+	GAME_AXIS_NONE = 0,
+	GAME_AXIS_FORWARD,
+	GAME_AXIS_PITCH,
+	GAME_AXIS_SIDE,
+	GAME_AXIS_YAW,
+	MAX_GAME_AXES
+};
+
 //-----------------------------------------------------------------
 // Purpose: Returns true if there's an active joystick connected.
 //-----------------------------------------------------------------
-bool CInput::EnableJoystickMode()
+bool CInputManager::EnableJoystickMode()
 {
 	return IsConsole() || in_joystick.GetBool();
 }
@@ -452,7 +463,7 @@ static float ResponseCurveLook( int curve, float x, int axis, float otherAxis, f
 //-----------------------------------------------------------------------------
 // Purpose: Advanced joystick setup
 //-----------------------------------------------------------------------------
-void CInput::Joystick_Advanced(void)
+void CInputManager::Joystick_Advanced(void)
 {
 	// called whenever an update is needed
 	int	i;
@@ -554,7 +565,7 @@ void CInput::Joystick_Advanced(void)
 // Input  : index - 
 // Output : char const
 //-----------------------------------------------------------------------------
-char const *CInput::DescribeAxis( int index )
+char const *CInputManager::DescribeAxis( int index )
 {
 	switch ( index )
 	{
@@ -580,7 +591,7 @@ char const *CInput::DescribeAxis( int index )
 // Input  : *axis - 
 //			*mapping - 
 //-----------------------------------------------------------------------------
-void CInput::DescribeJoystickAxis( char const *axis, joy_axis_t *mapping )
+void CInputManager::DescribeJoystickAxis( char const *axis, joy_axis_t *mapping )
 {
 	if ( !mapping->AxisMap )
 	{
@@ -600,7 +611,7 @@ void CInput::DescribeJoystickAxis( char const *axis, joy_axis_t *mapping )
 // Purpose: Allow joystick to issue key events
 // Not currently used - controller button events are pumped through the windprocs. KWD
 //-----------------------------------------------------------------------------
-void CInput::ControllerCommands( void )
+void CInputManager::ControllerCommands( void )
 {
 }
 
@@ -608,7 +619,7 @@ void CInput::ControllerCommands( void )
 //-----------------------------------------------------------------------------
 // Purpose: Scales the raw analog value to lie withing the axis range (full range - deadzone )
 //-----------------------------------------------------------------------------
-float CInput::ScaleAxisValue( const float axisValue, const float axisThreshold )
+float CInputManager::ScaleAxisValue( const float axisValue, const float axisThreshold )
 {
 	// Xbox scales the range of all axes in the inputsystem. PC can't do that because each axis mapping
 	// has a (potentially) unique threshold value.  If all axes were restricted to a single threshold
@@ -635,27 +646,27 @@ float CInput::ScaleAxisValue( const float axisValue, const float axisThreshold )
 }
 
 
-void CInput::Joystick_SetSampleTime(float frametime)
+void CInputManager::Joystick_SetSampleTime(float frametime)
 {
 	m_flRemainingJoystickSampleTime = frametime;
 }
 
-float CInput::Joystick_GetForward( void )
+float CInputManager::Joystick_GetForward( void )
 {
 	return m_flPreviousJoystickForward;
 }
 
-float CInput::Joystick_GetSide( void )
+float CInputManager::Joystick_GetSide( void )
 {
 	return m_flPreviousJoystickSide;
 }
 
-float CInput::Joystick_GetPitch( void )
+float CInputManager::Joystick_GetPitch( void )
 {
 	return m_flPreviousJoystickPitch;
 }
 
-float CInput::Joystick_GetYaw( void )
+float CInputManager::Joystick_GetYaw( void )
 {
 	return m_flPreviousJoystickYaw;
 }
@@ -665,6 +676,6 @@ float CInput::Joystick_GetYaw( void )
 // Input  : frametime - 
 //			*cmd - 
 //-----------------------------------------------------------------------------
-void CInput::JoyStickMove( float frametime, CUserCmd *cmd )
+void CInputManager::JoyStickMove( float frametime, CUserCmd *cmd )
 {
 }

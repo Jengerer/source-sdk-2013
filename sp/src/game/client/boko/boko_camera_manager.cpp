@@ -1,14 +1,21 @@
 #include "cbase.h"
-#include "camera_manager.h"
+#include "boko_camera_manager.h"
 
 // Set up camera manager.
-CBokoCameraManager::CCameraManager( void )
+CBokoCameraManager::CBokoCameraManager( void )
 {
 }
 
 // Camera manager destructor.
-CBokoCameraManager::~CCameraManager( void )
+CBokoCameraManager::~CBokoCameraManager( void )
 {
+}
+
+// Get the position and angles of the camera for htis frame.
+void CBokoCameraManager::CalculateCameraView( Vector &position, QAngle &angles )
+{
+	position = GetPosition();
+	angles = GetAngles();
 }
 
 // Pass mouse event to active camera controller.
@@ -22,12 +29,34 @@ void CBokoCameraManager::HandleMouse( float yawDelta, float pitchDelta )
 }
 
 // Update the camera for this frame.
-void CBokoCameraManager::CameraThink( void )
+void CBokoCameraManager::Think( void )
 {
 	C_BasePlayer *pPlayer = C_BasePlayer::GetLocalPlayer();
 	if (pPlayer != NULL) {
 		m_thirdPerson.UpdateCamera( pPlayer );
 	}
+}
+
+// Return whether we're in first person.
+bool CBokoCameraManager::IsFirstPerson( void )
+{
+	return false;
+}
+
+// Return whether we're in third person.
+bool CBokoCameraManager::IsThirdPerson( void )
+{
+	return true;
+}
+
+// Switch to third person if possible.
+void CBokoCameraManager::ToThirdPerson( void )
+{
+}
+
+// Switch to first person if possible.
+void CBokoCameraManager::ToFirstPerson( void )
+{
 }
 
 // Get current camera position.

@@ -9,7 +9,7 @@
 #include "beamdraw.h"
 #include "view.h"
 #include "env_wind_shared.h"
-#include "input.h"
+#include "input_manager.h"
 #ifdef TF_CLIENT_DLL
 #include "cdll_util.h"
 #endif

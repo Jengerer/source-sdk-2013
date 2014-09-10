@@ -17,12 +17,11 @@ public:
 	CBokoCameraManager( void );
 	~CBokoCameraManager( void );
 
-	// Camera switching functions.
-	void SwitchToFirstPerson( void );
-	void SwitchToThirdPerson( void );
+	// Return the position and angles for this frame.
+	virtual void CalculateCameraView( Vector &position, QAngle &angles );
 
 	// Handle mouse movement for camera.
-	void HandleMouse( float deltaX, float deltaY );
+	virtual void HandleMouse( float deltaX, float deltaY );
 
 	// Camera update function.
 	virtual void Think( void );
@@ -34,6 +33,8 @@ public:
 	// Switch camera state.
 	virtual void ToThirdPerson( void );
 	virtual void ToFirstPerson( void );
+
+private:
 
 	// Camera angle and position getters.
 	Vector GetPosition( void );

@@ -11,7 +11,6 @@
 #include "inetgraphpanel.h"
 #include "kbutton.h"
 #include <inetchannelinfo.h>
-#include "input.h"
 #include <vgui/IVGui.h>
 #include "VGuiMatSurface/IMatSystemSurface.h"
 #include <vgui_controls/Panel.h>
@@ -877,6 +876,9 @@ void CNetGraphPanel::DrawTextFields( int graphvalue, int x, int y, int w, netban
 		y -= textTall;
 	}
 }
+
+// TODO: Jengerer: Figure out a better way to do this, maybe.
+extern kbutton_t in_graph;
 
 //-----------------------------------------------------------------------------
 // Purpose: Determine type of graph to show, or if +graph key is held down, use detailed graph

@@ -8,7 +8,7 @@
 #include "weapon_selection.h"
 #include "iclientmode.h"
 #include "history_resource.h"
-#include "input.h"
+#include "client_game_interfaces.h"
 #include "../hud_crosshair.h"
 
 #include "VGuiMatSurface/IMatSystemSurface.h"
@@ -1339,7 +1339,7 @@ void CHudWeaponSelection::FastWeaponSwitch( int iWeaponSlot )
 	if ( pNextWeapon && pNextWeapon != pActiveWeapon && pNextWeapon->GetSlot() == iWeaponSlot )
 	{
 		// select the new weapon
-		::input->MakeWeaponSelection( pNextWeapon );
+		CClientGameInterfaces::GetInput()->MakeWeaponSelection( pNextWeapon );
 	}
 	else if ( pNextWeapon != pActiveWeapon )
 	{
@@ -1426,7 +1426,7 @@ void CHudWeaponSelection::PlusTypeFastWeaponSwitch( int iWeaponSlot )
 		if ( pWeapon != pActiveWeapon )
 		{
 			// Select the new weapon
-			::input->MakeWeaponSelection( pWeapon );
+			CClientGameInterfaces::GetInput()->MakeWeaponSelection( pWeapon );
 			SetSelectedWeapon( pWeapon );
 			bWeaponSelected = true;
 		}

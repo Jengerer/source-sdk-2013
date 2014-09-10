@@ -16,7 +16,7 @@ public:
 	virtual void HandleMouse( float deltaX, float deltaY ) = 0;
 
 	// Prepare camera for this frame.
-	virtual void CameraThink( void ) = 0;
+	virtual void Think( void ) = 0;
 
 	// Get camera state.
 	virtual bool IsFirstPerson( void ) = 0;

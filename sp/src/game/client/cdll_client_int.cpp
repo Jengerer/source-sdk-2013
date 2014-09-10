@@ -87,6 +87,8 @@
 #include "ihudlcd.h"
 #include "toolframework_client.h"
 #include "hltvcamera.h"
+#include "boko_game_interfaces.h"
+
 #if defined( REPLAY_ENABLED )
 #include "replay/replaycamera.h"
 #include "replay/replay_ragdoll.h"
@@ -1049,7 +1051,12 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CreateInterfaceFn physi
 
 	C_BaseTempEntity::PrecacheTempEnts();
 
-	input->Init_All();
+	// Initialize the game's client interfaces.
+	CBokoGameInterfaces::Initialize();
+
+	// Initialize the input manager.
+	IInput *inputManager = CClientGameInterfaces::GetInput();
+	inputManager->Initialize();
 
 	VGui_CreateGlobalPanels();
 
@@ -1184,7 +1191,7 @@ void CHLClient::Shutdown( void )
 	g_pClientMode->Disable();
 	g_pClientMode->Shutdown();
 
-	input->Shutdown_All();
+	CClientGameInterfaces::GetInput()->Shutdown();
 	C_BaseTempEntity::ClearDynamicTempEnts();
 	TermSmokeFogOverlay();
 	view->Shutdown();
@@ -1339,7 +1346,9 @@ ClientClass *CHLClient::GetAllClasses( void )
 //-----------------------------------------------------------------------------
 void CHLClient::IN_ActivateMouse( void )
 {
-	input->ActivateMouse();
+	IInput *pInput = CClientGameInterfaces::GetInput();
+	IMouse *pMouse = pInput->GetMouse();
+	pMouse->Activate();
 }
 
 //-----------------------------------------------------------------------------
@@ -1347,7 +1356,9 @@ void CHLClient::IN_ActivateMouse( void )
 //-----------------------------------------------------------------------------
 void CHLClient::IN_DeactivateMouse( void )
 {
-	input->DeactivateMouse();
+	IInput *pInput = CClientGameInterfaces::GetInput();
+	IMouse *pMouse = pInput->GetMouse();
+	pMouse->Deactivate();
 }
 
 //-----------------------------------------------------------------------------
@@ -1355,7 +1366,9 @@ void CHLClient::IN_DeactivateMouse( void )
 //-----------------------------------------------------------------------------
 void CHLClient::IN_Accumulate ( void )
 {
-	input->AccumulateMouse();
+	IInput *pInput = CClientGameInterfaces::GetInput();
+	IMouse *pMouse = pInput->GetMouse();
+	pMouse->AccumulateMovement();
 }
 
 //-----------------------------------------------------------------------------
@@ -1363,7 +1376,9 @@ void CHLClient::IN_Accumulate ( void )
 //-----------------------------------------------------------------------------
 void CHLClient::IN_ClearStates ( void )
 {
-	input->ClearStates();
+	IInput *pInput = CClientGameInterfaces::GetInput();
+	IMouse *pMouse = pInput->GetMouse();
+	pMouse->ResetAccumulatedMovement();
 }
 
 //-----------------------------------------------------------------------------
@@ -1372,7 +1387,7 @@ void CHLClient::IN_ClearStates ( void )
 //-----------------------------------------------------------------------------
 bool CHLClient::IN_IsKeyDown( const char *name, bool& isdown )
 {
-	kbutton_t *key = input->FindKey( name );
+	kbutton_t *key = CClientGameInterfaces::GetInput()->FindKey( name );
 	if ( !key )
 	{
 		return false;
@@ -1409,7 +1424,7 @@ void CHLClient::IN_OnMouseWheeled( int nDelta )
 //-----------------------------------------------------------------------------
 int CHLClient::IN_KeyEvent( int eventcode, ButtonCode_t keynum, const char *pszCurrentBinding )
 {
-	return input->KeyEvent( eventcode, keynum, pszCurrentBinding );
+	return CClientGameInterfaces::GetInput()->KeyEvent( eventcode, keynum, pszCurrentBinding );
 }
 
 void CHLClient::ExtraMouseSample( float frametime, bool active )
@@ -1420,13 +1435,13 @@ void CHLClient::ExtraMouseSample( float frametime, bool active )
 	C_BaseAnimating::AutoAllowBoneAccess boneaccess( true, false ); 
 
 	MDLCACHE_CRITICAL_SECTION();
-	input->ExtraMouseSample( frametime, active );
+	CClientGameInterfaces::GetInput()->ExtraMouseSample( frametime, active );
 }
 
 void CHLClient::IN_SetSampleTime( float frametime )
 {
-	input->Joystick_SetSampleTime( frametime );
-	input->IN_SetSampleTime( frametime );
+	CClientGameInterfaces::GetInput()->Joystick_SetSampleTime( frametime );
+	CClientGameInterfaces::GetInput()->IN_SetSampleTime( frametime );
 
 #ifdef SIXENSE
 	g_pSixenseInput->ResetFrameTime( frametime );
@@ -1447,7 +1462,7 @@ void CHLClient::CreateMove ( int sequence_number, float input_sample_frametime, 
 	C_BaseAnimating::AutoAllowBoneAccess boneaccess( true, false ); 
 
 	MDLCACHE_CRITICAL_SECTION();
-	input->CreateMove( sequence_number, input_sample_frametime, active );
+	CClientGameInterfaces::GetInput()->CreateMove( sequence_number, input_sample_frametime, active );
 }
 
 //-----------------------------------------------------------------------------
@@ -1458,7 +1473,7 @@ void CHLClient::CreateMove ( int sequence_number, float input_sample_frametime, 
 //-----------------------------------------------------------------------------
 bool CHLClient::WriteUsercmdDeltaToBuffer( bf_write *buf, int from, int to, bool isnewcommand )
 {
-	return input->WriteUsercmdDeltaToBuffer( buf, from, to, isnewcommand );
+	return CClientGameInterfaces::GetInput()->WriteUsercmdDeltaToBuffer( buf, from, to, isnewcommand );
 }
 
 //-----------------------------------------------------------------------------
@@ -1469,7 +1484,7 @@ bool CHLClient::WriteUsercmdDeltaToBuffer( bf_write *buf, int from, int to, bool
 //-----------------------------------------------------------------------------
 void CHLClient::EncodeUserCmdToBuffer( bf_write& buf, int slot )
 {
-	input->EncodeUserCmdToBuffer( buf, slot );
+	CClientGameInterfaces::GetInput()->EncodeUserCmdToBuffer( buf, slot );
 }
 
 //-----------------------------------------------------------------------------
@@ -1480,7 +1495,7 @@ void CHLClient::EncodeUserCmdToBuffer( bf_write& buf, int slot )
 //-----------------------------------------------------------------------------
 void CHLClient::DecodeUserCmdFromBuffer( bf_read& buf, int slot )
 {
-	input->DecodeUserCmdFromBuffer( buf, slot );
+	CClientGameInterfaces::GetInput()->DecodeUserCmdFromBuffer( buf, slot );
 }
 
 //-----------------------------------------------------------------------------
@@ -1572,7 +1587,7 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
 		return;
 	g_bLevelInitialized = true;
 
-	input->LevelInit();
+	CClientGameInterfaces::GetInput()->LevelInit();
 
 	vieweffects->LevelInit();
 	
@@ -2136,7 +2151,7 @@ void OnRenderStart()
 
 	// Make sure the camera simulation happens before OnRenderStart, where it's used.
 	// NOTE: the only thing that happens in CAM_Think is thirdperson related code.
-	input->CAM_Think();
+	CClientGameInterfaces::GetCamera()->Think();
 
 	// This will place the player + the view models + all parent
 	// entities	at the correct abs position so that their attachment points

@@ -382,7 +382,6 @@ $Project
 		$File	"menu.cpp"
 		$File	"message.cpp"
 		$File	"mouse_manager.h"
-		$File	"mouse_manager.cpp"
 		$File	"movehelper_client.cpp"
 		$File	"$SRCDIR\game\shared\movevars_shared.cpp"
 		$File	"$SRCDIR\game\shared\multiplay_gamerules.cpp"
@@ -547,6 +546,7 @@ $Project
 				"$SRCDIR\public\jigglebones.cpp"					\
 				"hud_lcd.cpp"										\
 				"in_mouse.cpp"										\
+				"mouse_manager.cpp"									\
 				"mumble.cpp"						\
 				"$SRCDIR\public\renamed_recvtable_compat.cpp"		\
 				"rendertexture.cpp"									
@@ -801,6 +801,7 @@ $Project
 		$File	"iinput.h"
 		$File	"iloadingdisc.h"
 		$File	"imessagechars.h"
+		$File	"imouse.h"
 		$File	"in_main.h"
 		$File	"inetgraphpanel.h"
 		$File	"initializer.h"

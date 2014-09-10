@@ -485,6 +485,7 @@
     <ClInclude Include="iinput.h" />
     <ClInclude Include="iloadingdisc.h" />
     <ClInclude Include="imessagechars.h" />
+    <ClInclude Include="imouse.h" />
     <ClInclude Include="in_main.h" />
     <ClInclude Include="inetgraphpanel.h" />
     <ClInclude Include="initializer.h" />
@@ -1101,7 +1102,10 @@
     </ClCompile>
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="message.cpp" />
-    <ClCompile Include="mouse_manager.cpp" />
+    <ClCompile Include="mouse_manager.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="movehelper_client.cpp" />
     <ClCompile Include="..\..\game\shared\movevars_shared.cpp" />
     <ClCompile Include="..\..\game\shared\mp_shareddefs.cpp" />

@@ -1,6 +1,8 @@
 #ifndef MOUSE_MANAGER_H
 #define MOUSE_MANAGER_H
 
+#include "imouse.h"
+
 // Mouse system parameters.
 enum {
 		MOUSE_ACCEL_THRESHOLD_1 = 0, // Mickey movement threshold after which to double.
@@ -10,7 +12,7 @@ enum {
 };
 
 // Class that manages mouse movement.
-class CMouseManager
+class CMouseManager : public IMouse
 {
 
 public:
@@ -19,26 +21,27 @@ public:
 	~CMouseManager( void );
 
 	// Initialize mouse.
-	void Initialize( void );
+	virtual void Initialize( void );
 
 	// Mouse enable/disable.
-	void ActivateMouse( void );
-	void DeactivateMouse( void );
+	virtual void Activate( void );
+	virtual void Deactivate( void );
+	virtual bool IsActive( void ) const;
 
 	// Mouse movement functions.
-	void UpdateMouse( float *deltaX, float *deltaY );
+	virtual void AccumulateMovement( void );
+	virtual void GetMouseMovement( float *deltaX, float *deltaY );
+	virtual void ResetAccumulatedMovement( void );
 
 	// Mouse cursor position functions.
-	void GetCursorPosition( int *pX, int *pY );
-	void SetCursorPosition( int x, int y );
-	void ResetToWindowCenter( void );
+	virtual void GetCursorPosition( int *pX, int *pY );
+	virtual void SetCursorPosition( int x, int y );
+	virtual void ResetToWindowCenter( void );
 
 private:
 
 	// Mouse movement and accumulation.
-	void AccumulateMovement( void );
 	void GetAccumulatedMovement( float *pX, float *pY );
-	void ResetAccumulatedMovement( void );
 	void FilterMouseDelta( float *pX, float *pY );
 	void ScaleMouseDelta( float *pX, float *pY );
 

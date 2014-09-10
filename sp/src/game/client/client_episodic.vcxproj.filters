@@ -848,6 +848,9 @@
     <ClInclude Include="imessagechars.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="imouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="in_main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2947,9 +2950,6 @@
     <ClCompile Include="boko\boko_camera_manager.cpp">
       <Filter>Source Files\Boko</Filter>
     </ClCompile>
-    <ClCompile Include="boko\boko_game_interfaces.cpp">
-      <Filter>Source Files\Boko</Filter>
-    </ClCompile>
     <ClCompile Include="game_controls\basemodel_panel.cpp">
       <Filter>Source Files\game_controls</Filter>
     </ClCompile>
@@ -3432,6 +3432,12 @@
     </ClCompile>
     <ClCompile Include="toolframework_client.cpp">
       <Filter>Tool Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="client_game_interfaces.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="boko\boko_game_interfaces.cpp">
+      <Filter>Source Files\Boko</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

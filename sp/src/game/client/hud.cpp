@@ -13,7 +13,7 @@
 #include "cbase.h"
 #include "hud_macros.h"
 #include "history_resource.h"
-#include "iinput.h"
+#include "client_game_interfaces.h"
 #include "clientmode.h"
 #include "in_buttons.h"
 #include <vgui_controls/Controls.h>
@@ -994,7 +994,7 @@ void CHud::ProcessInput( bool bActive )
 {
 	if ( bActive )
 	{
-		m_iKeyBits = input->GetButtonBits( 0 );
+		m_iKeyBits = CClientGameInterfaces::GetInput()->GetButtonBits( 0 );
 
 		// Weaponbits need to be sent down as a UserMsg now.
 		gHUD.Think();

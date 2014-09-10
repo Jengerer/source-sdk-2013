@@ -31,7 +31,6 @@
 #include "replay/replaycamera.h"
 #include "replay/replay_screenshot.h"
 #endif
-#include "input.h"
 #include "filesystem.h"
 #include "materialsystem/itexture.h"
 #include "materialsystem/imaterialsystem.h"
@@ -45,6 +44,7 @@
 #include "ScreenSpaceEffects.h"
 #include "sourcevr/isourcevirtualreality.h"
 #include "client_virtualreality.h"
+#include "client_game_interfaces.h"
 
 #if defined( REPLAY_ENABLED )
 #include "replay/ireplaysystem.h"
@@ -140,11 +140,17 @@ static ConVar cl_software_cursor ( "cl_software_cursor", "0", FCVAR_ARCHIVE, "Sw
 static Vector s_DemoView;
 static QAngle s_DemoAngle;
 
+// TODO: Jengerer: figure out a better way to do this, maybe.
+extern kbutton_t in_moveleft;
+extern kbutton_t in_moveright;
+extern kbutton_t in_forward;
+extern kbutton_t in_back;
+
 static void CalcDemoViewOverride( Vector &origin, QAngle &angles )
 {
 	engine->SetViewAngles( s_DemoAngle );
 
-	input->ExtraMouseSample( gpGlobals->absoluteframetime, true );
+	//input->ExtraMouseSample( gpGlobals->absoluteframetime, true );
 
 	engine->GetViewAngles( s_DemoAngle );
 
@@ -154,11 +160,11 @@ static void CalcDemoViewOverride( Vector &origin, QAngle &angles )
 
 	float speed = gpGlobals->absoluteframetime * cl_demoviewoverride.GetFloat() * 320;
 	
-	s_DemoView += speed * input->KeyState (&in_forward) * forward  ;
-	s_DemoView -= speed * input->KeyState (&in_back) * forward ;
+	s_DemoView += speed * CClientGameInterfaces::GetInput()->KeyState (&in_forward) * forward  ;
+	s_DemoView -= speed * CClientGameInterfaces::GetInput()->KeyState( &in_back ) * forward;
 
-	s_DemoView += speed * input->KeyState (&in_moveright) * right ;
-	s_DemoView -= speed * input->KeyState (&in_moveleft) * right ;
+	s_DemoView += speed * CClientGameInterfaces::GetInput()->KeyState( &in_moveright ) * right;
+	s_DemoView -= speed * CClientGameInterfaces::GetInput()->KeyState( &in_moveleft ) * right;
 
 	origin = s_DemoView;
 	angles = s_DemoAngle;
@@ -433,7 +439,7 @@ void CViewRender::DriftPitch (void)
 	// Don't count small mouse motion
 	if ( m_PitchDrift.nodrift )
 	{
-		if ( fabs( input->GetLastForwardMove() ) < cl_forwardspeed.GetFloat() )
+		if ( fabs( CClientGameInterfaces::GetInput()->GetLastForwardMove() ) < cl_forwardspeed.GetFloat() )
 		{
 			m_PitchDrift.driftmove = 0;
 		}
@@ -683,7 +689,7 @@ void CViewRender::SetUpViews()
 		// FIXME: What happens when there's no player?
 		if (pPlayer)
 		{
-			input->CalculateCameraView( view.origin, view.angles );
+			CClientGameInterfaces::GetCamera()->CalculateCameraView( view.origin, view.angles );
 			
 			// If we are looking through another entities eyes, then override the angles/origin for view
 			int viewentity = render->GetViewEntity();

@@ -15,7 +15,7 @@
 #include "tier1/KeyValues.h"
 #include "model_types.h"
 #include "vprof.h"
-#include "input.h"
+#include "client_game_interfaces.h"
 
 extern ConVar cl_particleeffect_aabb_buffer;
 
@@ -546,7 +546,7 @@ int CNewParticleEffect::DrawModel( int flags )
 			if ( pEntity )
 			{
 				// If we're in thirdperson, we still see it
-				if ( !input->CAM_IsThirdPerson() )
+				if (!CClientGameInterfaces::GetCamera()->IsThirdPerson())
 				{
 					if ( pEntity == pCameraObject )
 						return 0;

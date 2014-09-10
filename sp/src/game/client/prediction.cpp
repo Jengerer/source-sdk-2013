@@ -9,7 +9,7 @@
 #include "igamemovement.h"
 #include "prediction_private.h"
 #include "ivrenderview.h"
-#include "iinput.h"
+#include "client_game_interfaces.h"
 #include "usercmd.h"
 #include <vgui_controls/Controls.h>
 #include <vgui/ISurface.h>
@@ -1522,7 +1522,7 @@ bool CPrediction::PerformPrediction( bool received_new_world_update, C_BasePlaye
 		if ( i >= MULTIPLAYER_BACKUP )
 			break;
 
-		CUserCmd *cmd = input->GetUserCmd( current_command );
+		CUserCmd *cmd = CClientGameInterfaces::GetInput()->GetUserCmd( current_command );
 		
 		if ( !cmd )
 		{

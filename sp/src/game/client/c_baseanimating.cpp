@@ -38,7 +38,7 @@
 #include "c_entitydissolve.h"
 #include "saverestoretypes.h"
 #include "c_fire_smoke.h"
-#include "input.h"
+#include "input_manager.h"
 #include "soundinfo.h"
 #include "tools/bonelist.h"
 #include "toolframework/itoolframework.h"
@@ -54,6 +54,7 @@
 #include "replay/replay_ragdoll.h"
 #include "studio_stats.h"
 #include "tier1/callqueue.h"
+#include "client_game_interfaces.h"
 
 #ifdef TF_CLIENT_DLL
 #include "c_tf_player.h"
@@ -2572,7 +2573,8 @@ void C_BaseAnimating::CalculateIKLocks( float currentTime )
 #if defined( HL2_CLIENT_DLL )
 	if (minHeight < FLT_MAX)
 	{
-		input->AddIKGroundContactInfo( entindex(), minHeight, maxHeight );
+		// TODO: Jengerer: look into why this is even in input...
+		CClientGameInterfaces::GetInput()->AddIKGroundContactInfo( entindex(), minHeight, maxHeight );
 	}
 #endif
 

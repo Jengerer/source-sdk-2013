@@ -1,9 +1,12 @@
+#include "cbase.h"
 #include "boko_game_interfaces.h"
 
-/* Initialize the game's interfaces. */
+CBokoCameraManager CBokoGameInterfaces::m_camera;
+CBokoInputManager CBokoGameInterfaces::m_input;
+
+// Initialize the implementing interface classes.
 void CBokoGameInterfaces::Initialize( void )
 {
-	SetCamera( m_camera );
-	SetInput( m_input );
+	SetInput( &m_input );
+	SetCamera( &m_camera );
 }
-
