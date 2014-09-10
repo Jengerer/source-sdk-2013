@@ -18,6 +18,7 @@
 #include "kbutton.h"
 #include "ehandle.h"
 #include "inputsystem/AnalogCode.h"
+#include "mouse_manager.h"
 
 typedef unsigned int CRC32_t;
 
@@ -50,10 +51,9 @@ public:
 	virtual		void		Initialize( void );
 	virtual		void		Shutdown( void );
 
-	// PLayer movement and command handling.
-	virtual		int		GetButtonBits( int );
+	// Player movement and command handling.
+	virtual		int			GetButtonBits( int );
 	virtual		void		CreateMove( int sequence_number, float input_sample_frametime, bool active );
-	virtual		void		ExtraMouseSample( float frametime, bool active );
 	virtual		bool		WriteUsercmdDeltaToBuffer( bf_write *buf, int from, int to, bool isnewcommand );
 	virtual		void		EncodeUserCmdToBuffer( bf_write& buf, int slot );
 	virtual		void		DecodeUserCmdFromBuffer( bf_read& buf, int slot );
@@ -76,16 +76,7 @@ public:
 	virtual		float		Joystick_GetYaw( void );
 
 	// Mouse handling.
-	virtual		void		AccumulateMouse( void );
-	virtual		void		ActivateMouse( void );
-	virtual		void		DeactivateMouse( void );
-
-	virtual		void		ClearStates( void );
 	virtual		float		GetLookSpring( void );
-
-	virtual		void		GetFullscreenMousePos( int *mx, int *my, int *unclampedx = NULL, int *unclampedy = NULL );
-	virtual		void		SetFullscreenMousePos( int mx, int my );
-	virtual		void		ResetMouse( void );
 
 //	virtual		bool		IsNoClipping( void );
 	virtual		float		GetLastForwardMove( void );
@@ -99,42 +90,32 @@ public:
 
 	virtual	bool		EnableJoystickMode();
 
-// Private Implementation
 private:
-	// Implementation specific initialization
-	void		Init_Keyboard( void );
-	void		Init_Mouse( void );
-	void		Shutdown_Keyboard( void );
+
+	// Initializing input components.
+	void		InitializeKeyboard( void );
+	void		ShutdownKeyboard( void );
+
 	// Add a named key to the list queryable by the engine
 	void		AddKeyButton( const char *name, kbutton_t *pkb );
-	// Mouse/keyboard movement input helpers
+
+	// Mouse input helpers.
+	void		AdjustPitch( float speed, QAngle& viewangles );
+	virtual void AdjustYaw( float speed, QAngle& viewangles );
 	void		ScaleMovements( CUserCmd *cmd );
 	void		ComputeForwardMove( CUserCmd *cmd );
 	void		ComputeUpwardMove( CUserCmd *cmd );
 	void		ComputeSideMove( CUserCmd *cmd );
 	void		AdjustAngles ( float frametime );
 	void		ClampAngles( QAngle& viewangles );
-	void		AdjustPitch( float speed, QAngle& viewangles );
-	virtual void AdjustYaw( float speed, QAngle& viewangles );
-	float		DetermineKeySpeed( float frametime );
-	void		GetAccumulatedMouseDeltasAndResetAccumulators( float *mx, float *my );
-	void		GetMouseDelta( float inmousex, float inmousey, float *pOutMouseX, float *pOutMouseY );
-	void		ScaleMouse( float *x, float *y );
-	void		ApplyMouse( QAngle& viewangles, CUserCmd *cmd, float mouse_x, float mouse_y );
-	void		MouseMove ( CUserCmd *cmd );
 
-	// Joystick  movement input helpers
+	float		DetermineKeySpeed( float frametime );
+
+	// Joystick movement input helpers
 	void		ControllerMove ( float frametime, CUserCmd *cmd );
 	void		JoyStickMove ( float frametime, CUserCmd *cmd );
 	float		ScaleAxisValue( const float axisValue, const float axisThreshold );
 	virtual float JoyStickAdjustYaw( float flSpeed ) { return flSpeed; }
-
-	// Call this to get the cursor position. The call will be logged in the VCR file if there is one.
-	void		GetMousePos(int &x, int &y);
-	void		SetMousePos(int x, int y);
-	void		GetWindowCenter( int&x, int& y );
-	// Called once per frame to allow convar overrides to acceleration settings when mouse is active
-	void		CheckMouseAcclerationVars();
 
 	void		ValidateUserCmd( CUserCmd *usercmd, int sequence_number );
 
@@ -143,6 +124,9 @@ private:
 
 	// Camera managing class to pass mouse events to.
 	ICamera *m_pCamera;
+
+	// Mouse manager class.
+	CMouseManager m_mouseManager;
 
 	typedef struct
 	{

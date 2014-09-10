@@ -803,6 +803,9 @@
     <ClInclude Include="hudtexturehandle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="icamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="iclassmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -851,7 +854,7 @@
     <ClInclude Include="initializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="input.h">
+    <ClInclude Include="input_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="interpolatedvar.h">
@@ -1781,9 +1784,6 @@
     <ClInclude Include="..\..\game\client\c_vote_controller.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="camera_manager.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="cdll_bounded_cvars.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -1794,6 +1794,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="commentary_modelviewer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mouse_manager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\shared\particle_parse.h">
@@ -2203,9 +2206,6 @@
     <ClCompile Include="c_world.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="camera_manager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="camomaterialproxy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -2543,6 +2543,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="message.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mouse_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="movehelper_client.cpp">
@@ -3104,9 +3107,6 @@
       <Filter>Source Files\HL2 DLL</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game\shared\hl2\hl_gamemovement.cpp">
-      <Filter>Source Files\HL2 DLL</Filter>
-    </ClCompile>
-    <ClCompile Include="hl2\hl_in_main.cpp">
       <Filter>Source Files\HL2 DLL</Filter>
     </ClCompile>
     <ClCompile Include="hl2\hl_prediction.cpp">

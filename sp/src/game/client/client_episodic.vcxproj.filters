@@ -25,6 +25,9 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{BA03E055-4FA2-FCE3-8A1C-D348547D379C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Boko">
+      <UniqueIdentifier>{70201B49-8848-48D3-406A-BAA702E2F5E6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\game_controls">
       <UniqueIdentifier>{1E7DB91A-DC0A-B17F-617D-4C4FB3FA7A3E}</UniqueIdentifier>
     </Filter>
@@ -803,6 +806,9 @@
     <ClInclude Include="hudtexturehandle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="icamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="iclassmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -849,6 +855,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="initializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="input_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="interpolatedvar.h">
@@ -1790,6 +1799,9 @@
     <ClInclude Include="commentary_modelviewer.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="mouse_manager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\game\shared\particle_parse.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -1813,6 +1825,12 @@
     </ClInclude>
     <ClInclude Include="viewpostprocess.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="boko\boko_camera_manager.h">
+      <Filter>Source Files\Boko</Filter>
+    </ClInclude>
+    <ClInclude Include="boko\boko_game_interfaces.h">
+      <Filter>Source Files\Boko</Filter>
     </ClInclude>
     <ClInclude Include="game_controls\basemodel_panel.h">
       <Filter>Source Files\game_controls</Filter>
@@ -1885,21 +1903,6 @@
     </ClInclude>
     <ClInclude Include="toolframework_client.h">
       <Filter>Tool Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="icamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="client_game_interfaces.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="boko_game_interfaces.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="boko_camera_manager.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="input_manager.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2560,6 +2563,9 @@
     <ClCompile Include="message.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mouse_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="movehelper_client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -2937,6 +2943,12 @@
     </ClCompile>
     <ClCompile Include="WorldDimsProxy.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="boko\boko_camera_manager.cpp">
+      <Filter>Source Files\Boko</Filter>
+    </ClCompile>
+    <ClCompile Include="boko\boko_game_interfaces.cpp">
+      <Filter>Source Files\Boko</Filter>
     </ClCompile>
     <ClCompile Include="game_controls\basemodel_panel.cpp">
       <Filter>Source Files\game_controls</Filter>
@@ -3420,15 +3432,6 @@
     </ClCompile>
     <ClCompile Include="toolframework_client.cpp">
       <Filter>Tool Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="client_game_interfaces.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hl2\boko_input_manager.cpp">
-      <Filter>Source Files\HL2 DLL</Filter>
-    </ClCompile>
-    <ClCompile Include="boko_camera_manager.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

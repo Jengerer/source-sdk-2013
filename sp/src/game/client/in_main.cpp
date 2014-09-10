@@ -259,7 +259,7 @@ FindKey
 Allows the engine to request a kbutton handler by name, if the key exists.
 ==============================
 */
-kbutton_t *CInput::FindKey( const char *name )
+kbutton_t *CInputManagerFindKey( const char *name )
 {
 	CKeyboardKey *p;
 	p = m_pKeys;
@@ -282,7 +282,7 @@ AddKeyButton
 Add a kbutton_t * to the list of pointers the engine can retrieve via KB_Find
 ============
 */
-void CInput::AddKeyButton( const char *name, kbutton_t *pkb )
+void CInputManagerAddKeyButton( const char *name, kbutton_t *pkb )
 {
 	CKeyboardKey *p;	
 	kbutton_t *kb;
@@ -304,7 +304,7 @@ void CInput::AddKeyButton( const char *name, kbutton_t *pkb )
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-CInput::CInput( void )
+CInputManagerCInput( void )
 {
 	m_pCommands = NULL;
 	m_pCameraThirdData = NULL;
@@ -314,7 +314,7 @@ CInput::CInput( void )
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-CInput::~CInput( void )
+CInputManager~CInput( void )
 {
 }
 
@@ -325,7 +325,7 @@ Init_Keyboard
 Add kbutton_t definitions that the engine can query if needed
 ============
 */
-void CInput::Init_Keyboard( void )
+void CInputManagerInit_Keyboard( void )
 {
 	m_pKeys = NULL;
 
@@ -340,7 +340,7 @@ Shutdown_Keyboard
 Clear kblist
 ============
 */
-void CInput::Shutdown_Keyboard( void )
+void CInputManagerShutdown_Keyboard( void )
 {
 	CKeyboardKey *p, *n;
 	p = m_pKeys;
@@ -550,7 +550,7 @@ KeyEvent
 Return 1 to allow engine to process the key, otherwise, act on it as needed
 ============
 */
-int CInput::KeyEvent( int down, ButtonCode_t code, const char *pszCurrentBinding )
+int CInputManagerKeyEvent( int down, ButtonCode_t code, const char *pszCurrentBinding )
 {
 	// Deal with camera intercepting the mouse
 	if ( ( code == MOUSE_LEFT ) || ( code == MOUSE_RIGHT ) )
@@ -577,7 +577,7 @@ Returns 0.25 if a key was pressed and released during the frame,
 1.0 if held for the entire time
 ===============
 */
-float CInput::KeyState ( kbutton_t *key )
+float CInputManagerKeyState ( kbutton_t *key )
 {
 	float		val = 0.0;
 	int			impulsedown, impulseup, down;
@@ -623,7 +623,7 @@ float CInput::KeyState ( kbutton_t *key )
 	return val;
 }
 
-void CInput::IN_SetSampleTime( float frametime )
+void CInputManagerIN_SetSampleTime( float frametime )
 {
 	m_flKeyboardSampleTime = frametime;
 }
@@ -636,7 +636,7 @@ DetermineKeySpeed
 */
 static ConVar in_usekeyboardsampletime( "in_usekeyboardsampletime", "1", 0, "Use keyboard sample time smoothing." );
 
-float CInput::DetermineKeySpeed( float frametime )
+float CInputManagerDetermineKeySpeed( float frametime )
 {
 
 	if ( in_usekeyboardsampletime.GetBool() )
@@ -666,7 +666,7 @@ AdjustYaw
 
 ==============================
 */
-void CInput::AdjustYaw( float speed, QAngle& viewangles )
+void CInputManagerAdjustYaw( float speed, QAngle& viewangles )
 {
 }
 
@@ -676,7 +676,7 @@ AdjustPitch
 
 ==============================
 */
-void CInput::AdjustPitch( float speed, QAngle& viewangles )
+void CInputManagerAdjustPitch( float speed, QAngle& viewangles )
 {
 	// only allow keyboard looking if mouse look is disabled
 	if ( UsingMouselook() == false )
@@ -709,7 +709,7 @@ ClampAngles
 
 ==============================
 */
-void CInput::ClampAngles( QAngle& viewangles )
+void CInputManagerClampAngles( QAngle& viewangles )
 {
 	if ( viewangles[PITCH] > cl_pitchdown.GetFloat() )
 	{
@@ -739,7 +739,7 @@ AdjustAngles
 Moves the local angle positions
 ================
 */
-void CInput::AdjustAngles ( float frametime )
+void CInputManagerAdjustAngles ( float frametime )
 {
 	float	speed;
 	QAngle viewangles;
@@ -773,7 +773,7 @@ ComputeSideMove
 
 ==============================
 */
-void CInput::ComputeSideMove( CUserCmd *cmd )
+void CInputManagerComputeSideMove( CUserCmd *cmd )
 {
 	// thirdperson platformer movement
 	if ( CAM_IsThirdPerson() && thirdperson_platformer.GetInt() )
@@ -817,7 +817,7 @@ ComputeUpwardMove
 
 ==============================
 */
-void CInput::ComputeUpwardMove( CUserCmd *cmd )
+void CInputManagerComputeUpwardMove( CUserCmd *cmd )
 {
 	cmd->upmove += cl_upspeed.GetFloat() * KeyState (&in_up);
 	cmd->upmove -= cl_upspeed.GetFloat() * KeyState (&in_down);
@@ -829,7 +829,7 @@ ComputeForwardMove
 
 ==============================
 */
-void CInput::ComputeForwardMove( CUserCmd *cmd )
+void CInputManagerComputeForwardMove( CUserCmd *cmd )
 {
 	// thirdperson platformer movement
 	if ( CAM_IsThirdPerson() && thirdperson_platformer.GetInt() )
@@ -875,7 +875,7 @@ ScaleMovements
 
 ==============================
 */
-void CInput::ScaleMovements( CUserCmd *cmd )
+void CInputManagerScaleMovements( CUserCmd *cmd )
 {
 	// float spd;
 
@@ -911,7 +911,7 @@ void CInput::ScaleMovements( CUserCmd *cmd )
 ControllerMove
 ===========
 */
-void CInput::ControllerMove( float frametime, CUserCmd *cmd )
+void CInputManagerControllerMove( float frametime, CUserCmd *cmd )
 {
 	if ( IsPC() )
 	{
@@ -956,7 +956,7 @@ void CInput::ControllerMove( float frametime, CUserCmd *cmd )
 // Purpose: 
 // Input  : *weapon - 
 //-----------------------------------------------------------------------------
-void CInput::MakeWeaponSelection( C_BaseCombatWeapon *weapon )
+void CInputManagerMakeWeaponSelection( C_BaseCombatWeapon *weapon )
 {
 	m_hSelectedWeapon = weapon;
 }
@@ -971,7 +971,7 @@ if active == 1 then we are 1) not playing back demos ( where our commands are ig
 ================
 */
 
-void CInput::ExtraMouseSample( float frametime, bool active )
+void CInputManagerExtraMouseSample( float frametime, bool active )
 {
 	CUserCmd dummy;
 	CUserCmd *cmd = &dummy;
@@ -1078,7 +1078,7 @@ void CInput::ExtraMouseSample( float frametime, bool active )
 
 }
 
-void CInput::CreateMove ( int sequence_number, float input_sample_frametime, bool active )
+void CInputManagerCreateMove ( int sequence_number, float input_sample_frametime, bool active )
 {	
 	CUserCmd *cmd = &m_pCommands[ sequence_number % MULTIPLAYER_BACKUP ];
 	CVerifiedUserCmd *pVerified = &m_pVerifiedCommands[ sequence_number % MULTIPLAYER_BACKUP ];
@@ -1266,7 +1266,7 @@ void CInput::CreateMove ( int sequence_number, float input_sample_frametime, boo
 //			buffersize - 
 //			slot - 
 //-----------------------------------------------------------------------------
-void CInput::EncodeUserCmdToBuffer( bf_write& buf, int sequence_number )
+void CInputManagerEncodeUserCmdToBuffer( bf_write& buf, int sequence_number )
 {
 	CUserCmd nullcmd;
 	CUserCmd *cmd = GetUserCmd( sequence_number);
@@ -1280,7 +1280,7 @@ void CInput::EncodeUserCmdToBuffer( bf_write& buf, int sequence_number )
 //			buffersize - 
 //			slot - 
 //-----------------------------------------------------------------------------
-void CInput::DecodeUserCmdFromBuffer( bf_read& buf, int sequence_number )
+void CInputManagerDecodeUserCmdFromBuffer( bf_read& buf, int sequence_number )
 {
 	CUserCmd nullcmd;
 	CUserCmd *cmd = &m_pCommands[ sequence_number % MULTIPLAYER_BACKUP];
@@ -1288,7 +1288,7 @@ void CInput::DecodeUserCmdFromBuffer( bf_read& buf, int sequence_number )
 	ReadUsercmd( &buf, cmd, &nullcmd );
 }
 
-void CInput::ValidateUserCmd( CUserCmd *usercmd, int sequence_number )
+void CInputManagerValidateUserCmd( CUserCmd *usercmd, int sequence_number )
 {
 	// Validate that the usercmd hasn't been changed
 	CRC32_t crc = usercmd->GetChecksum();
@@ -1304,7 +1304,7 @@ void CInput::ValidateUserCmd( CUserCmd *usercmd, int sequence_number )
 //			from - 
 //			to - 
 //-----------------------------------------------------------------------------
-bool CInput::WriteUsercmdDeltaToBuffer( bf_write *buf, int from, int to, bool isnewcommand )
+bool CInputManagerWriteUsercmdDeltaToBuffer( bf_write *buf, int from, int to, bool isnewcommand )
 {
 	Assert( m_pCommands );
 
@@ -1366,7 +1366,7 @@ bool CInput::WriteUsercmdDeltaToBuffer( bf_write *buf, int from, int to, bool is
 // Input  : slot - 
 // Output : CUserCmd
 //-----------------------------------------------------------------------------
-CUserCmd *CInput::GetUserCmd( int sequence_number )
+CUserCmd *CInputManagerGetUserCmd( int sequence_number )
 {
 	Assert( m_pCommands );
 
@@ -1420,7 +1420,7 @@ Returns appropriate button info for keyboard and mouse state
 Set bResetState to 1 to clear old state info
 ============
 */
-int CInput::GetButtonBits( int bResetState )
+int CInputManagerGetButtonBits( int bResetState )
 {
 	int bits = 0;
 
@@ -1482,7 +1482,7 @@ int CInput::GetButtonBits( int bResetState )
 //-----------------------------------------------------------------------------
 // Causes an input to have to be re-pressed to become active
 //-----------------------------------------------------------------------------
-void CInput::ClearInputButton( int bits )
+void CInputManagerClearInputButton( int bits )
 {
 	s_ClearInputState |= bits;
 }
@@ -1494,7 +1494,7 @@ GetLookSpring
 
 ==============================
 */
-float CInput::GetLookSpring( void )
+float CInputManagerGetLookSpring( void )
 {
 	return lookspring.GetInt();
 }
@@ -1503,7 +1503,7 @@ float CInput::GetLookSpring( void )
 // Purpose: 
 // Output : float
 //-----------------------------------------------------------------------------
-float CInput::GetLastForwardMove( void )
+float CInputManagerGetLastForwardMove( void )
 {
 	return m_flLastForwardMove;
 }
@@ -1515,7 +1515,7 @@ float CInput::GetLastForwardMove( void )
 // Output :
 //-----------------------------------------------------------------------------
 
-void CInput::AddIKGroundContactInfo( int entindex, float minheight, float maxheight )
+void CInputManagerAddIKGroundContactInfo( int entindex, float minheight, float maxheight )
 {
 	CEntityGroundContact data;
 	data.entindex = entindex;
@@ -1616,7 +1616,7 @@ static ConCommand xboxlook("xlook", IN_XboxStub);
 Init_All
 ============
 */
-void CInput::Init_All (void)
+void CInputManagerInit_All (void)
 {
 	Assert( !m_pCommands );
 	m_pCommands = new CUserCmd[ MULTIPLAYER_BACKUP ];
@@ -1654,7 +1654,7 @@ void CInput::Init_All (void)
 Shutdown_All
 ============
 */
-void CInput::Shutdown_All(void)
+void CInputManagerShutdown_All(void)
 {
 	DeactivateMouse();
 	Shutdown_Keyboard();
@@ -1666,7 +1666,7 @@ void CInput::Shutdown_All(void)
 	m_pVerifiedCommands = NULL;
 }
 
-void CInput::LevelInit( void )
+void CInputManagerLevelInit( void )
 {
 #if defined( HL2_CLIENT_DLL )
 	// Remove any IK information

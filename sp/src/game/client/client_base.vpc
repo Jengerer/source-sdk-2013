@@ -381,6 +381,8 @@ $Project
 		$File	"matrixproxy.cpp"
 		$File	"menu.cpp"
 		$File	"message.cpp"
+		$File	"mouse_manager.h"
+		$File	"mouse_manager.cpp"
 		$File	"movehelper_client.cpp"
 		$File	"$SRCDIR\game\shared\movevars_shared.cpp"
 		$File	"$SRCDIR\game\shared\multiplay_gamerules.cpp"
