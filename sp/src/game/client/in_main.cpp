@@ -754,41 +754,8 @@ ComputeSideMove
 */
 void CInputManager::ComputeSideMove( CUserCmd *cmd )
 {
-	// thirdperson platformer movement
-	bool isThirdPerson = CClientGameInterfaces::GetCamera()->IsThirdPerson();
-	if (isThirdPerson && thirdperson_platformer.GetInt() )
-	{
-		// no sideways movement in this mode
-		return;
-	}
-
-	// thirdperson screenspace movement
-	if (isThirdPerson && thirdperson_screenspace.GetInt())
-	{
-		float ideal_yaw = cam_idealyaw.GetFloat();
-		float ideal_sin = sin(DEG2RAD(ideal_yaw));
-		float ideal_cos = cos(DEG2RAD(ideal_yaw));
-		
-		float movement = ideal_cos*KeyState(&in_moveright)
-			+  ideal_sin*KeyState(&in_back)
-			+ -ideal_cos*KeyState(&in_moveleft)
-			+ -ideal_sin*KeyState(&in_forward);
-
-		cmd->sidemove += cl_sidespeed.GetFloat() * movement;
-
-		return;
-	}
-
-	// If strafing, check left and right keys and act like moveleft and moveright keys
-	if ( in_strafe.state & 1 )
-	{
-		cmd->sidemove += cl_sidespeed.GetFloat() * KeyState (&in_right);
-		cmd->sidemove -= cl_sidespeed.GetFloat() * KeyState (&in_left);
-	}
-
-	// Otherwise, check strafe keys
-	cmd->sidemove += cl_sidespeed.GetFloat() * KeyState (&in_moveright);
-	cmd->sidemove -= cl_sidespeed.GetFloat() * KeyState (&in_moveleft);
+	// Just store camera-space intended direction and resolve with view angles later.
+	cmd->sidemove = cl_sidespeed.GetFloat() * (KeyState( &in_moveright ) - KeyState( &in_moveleft ));
 }
 
 /*
@@ -799,8 +766,8 @@ ComputeUpwardMove
 */
 void CInputManager::ComputeUpwardMove( CUserCmd *cmd )
 {
-	cmd->upmove += cl_upspeed.GetFloat() * KeyState (&in_up);
-	cmd->upmove -= cl_upspeed.GetFloat() * KeyState (&in_down);
+	cmd->upmove += cl_upspeed.GetFloat() * KeyState ( &in_up );
+	cmd->upmove -= cl_upspeed.GetFloat() * KeyState ( &in_down );
 }
 
 /*
@@ -811,43 +778,9 @@ ComputeForwardMove
 */
 void CInputManager::ComputeForwardMove( CUserCmd *cmd )
 {
-	// thirdperson platformer movement
-	bool isThirdPerson = CClientGameInterfaces::GetCamera()->IsThirdPerson();
-	if (isThirdPerson && thirdperson_platformer.GetInt())
-	{
-		// movement is always forward in this mode
-		float movement = KeyState(&in_forward)
-			|| KeyState(&in_moveright)
-			|| KeyState(&in_back)
-			|| KeyState(&in_moveleft);
-
-		cmd->forwardmove += cl_forwardspeed.GetFloat() * movement;
-
-		return;
-	}
-
-	// thirdperson screenspace movement
-	if (isThirdPerson && thirdperson_screenspace.GetInt())
-	{
-		float ideal_yaw = cam_idealyaw.GetFloat();
-		float ideal_sin = sin(DEG2RAD(ideal_yaw));
-		float ideal_cos = cos(DEG2RAD(ideal_yaw));
-		
-		float movement = ideal_cos*KeyState(&in_forward)
-			+  ideal_sin*KeyState(&in_moveright)
-			+ -ideal_cos*KeyState(&in_back)
-			+ -ideal_sin*KeyState(&in_moveleft);
-
-		cmd->forwardmove += cl_forwardspeed.GetFloat() * movement;
-
-		return;
-	}
-
-	if ( !(in_klook.state & 1 ) )
-	{	
-		cmd->forwardmove += cl_forwardspeed.GetFloat() * KeyState (&in_forward);
-		cmd->forwardmove -= cl_backspeed.GetFloat() * KeyState (&in_back);
-	}	
+	// Just store camera-space intended direction and resolve with view angles later.
+	cmd->forwardmove = (cl_forwardspeed.GetFloat() * KeyState( &in_forward ))
+		- (cl_backspeed.GetFloat() * KeyState( &in_back ));
 }
 
 /*
@@ -896,10 +829,12 @@ void CInputManager::ControllerMove( float frametime, CUserCmd *cmd )
 {
 	if ( IsPC() )
 	{
+		// Control the camera with the mouse.
 		if ( m_mouseManager.IsActive() )
 		{
-			// TODO: Jengerer must fix this.
-			//MouseMove( cmd);
+			float x, y;
+			m_mouseManager.GetMouseMovement( &x, &y );
+			CClientGameInterfaces::GetCamera()->HandleMouse( x, y );
 		}
 	}
 

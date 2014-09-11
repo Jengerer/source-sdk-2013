@@ -1377,8 +1377,12 @@ void CHLClient::IN_Accumulate ( void )
 void CHLClient::IN_ClearStates ( void )
 {
 	IInput *pInput = CClientGameInterfaces::GetInput();
-	IMouse *pMouse = pInput->GetMouse();
-	pMouse->ResetAccumulatedMovement();
+
+	// Engine may request state clear before initialized.
+	if (pInput != NULL) {
+		IMouse *pMouse = pInput->GetMouse();
+		pMouse->ResetAccumulatedMovement();
+	}
 }
 
 //-----------------------------------------------------------------------------

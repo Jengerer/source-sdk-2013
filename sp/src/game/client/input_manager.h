@@ -48,8 +48,8 @@ public:
 	~CInputManager( void );
 
 	// Initialize and clean up.
-	virtual		void		Initialize( void );
-	virtual		void		Shutdown( void );
+	virtual	void Initialize( void );
+	virtual	void Shutdown( void );
 
 	// Get a handle to the mouse input manager.
 	virtual IMouse *GetMouse( void );
@@ -125,9 +125,6 @@ private:
 
 // Private Data
 private:
-
-	// Camera managing class to pass mouse events to.
-	ICamera *m_pCamera;
 
 	// Mouse manager class.
 	CMouseManager m_mouseManager;

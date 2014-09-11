@@ -219,7 +219,7 @@ void CMouseManager::GetAccumulatedMovement( float *pX, float *pY )
 	// Use internally accumulated otherwise.
 	if (!returnedRaw) {
 		*pX = (float)m_iAccumulatedX;
-		*pY = (float)m_iAccumulatedX;
+		*pY = (float)m_iAccumulatedY;
 		m_iAccumulatedX = 0;
 		m_iAccumulatedY = 0;
 	}
@@ -260,7 +260,7 @@ void CMouseManager::FilterMouseDelta( float *pX, float *pY )
 void CMouseManager::ScaleMouseDelta( float *pX, float *pY )
 {
 	// Get current sample.
-	float deltaX = *pY;
+	float deltaX = *pX;
 	float deltaY = *pY;
 
 	// Scale by sensitivity value.

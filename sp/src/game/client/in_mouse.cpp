@@ -49,39 +49,10 @@ extern ConVar cl_pitchdown;
 extern ConVar cl_pitchup;
 extern const ConVar *sv_cheats;
 
-class ConVar_m_pitch : public ConVar_ServerBounded
-{
-public:
-	ConVar_m_pitch() : 
-		ConVar_ServerBounded( "m_pitch","0.022", FCVAR_ARCHIVE, "Mouse pitch factor." )
-	{
-	}
-	
-	virtual float GetFloat() const
-	{
-		if ( !sv_cheats )
-			sv_cheats = cvar->FindVar( "sv_cheats" );
-
-		// If sv_cheats is on then it can be anything.
-		float flBaseValue = GetBaseFloatValue();
-		if ( !sv_cheats || sv_cheats->GetBool() )
-			return flBaseValue;
-
-		// If sv_cheats is off than it can only be 0.022 or -0.022 (if they've reversed the mouse in the options).		
-		if ( flBaseValue > 0 )
-			return 0.022f;
-		else
-			return -0.022f;
-	}
-} cvar_m_pitch;
-ConVar_ServerBounded *m_pitch = &cvar_m_pitch;
-
 extern ConVar cam_idealyaw;
 extern ConVar cam_idealpitch;
 extern ConVar thirdperson_platformer;
 
-static ConVar m_side( "m_side","0.8", FCVAR_ARCHIVE, "Mouse side factor." );
-static ConVar m_yaw( "m_yaw","0.022", FCVAR_ARCHIVE, "Mouse yaw factor." );
 static ConVar m_forward( "m_forward","1", FCVAR_ARCHIVE, "Mouse forward factor." );
 
 
